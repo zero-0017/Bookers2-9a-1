@@ -21,7 +21,7 @@
          <td class="favorite_buttons_<%= @book.id %>">
           <%= render 'favorites/favorite', book: @book %></td>
 
-          <td>コメント数：<%= @book.book_comments.count %></td>
+          <td class="comment_count">コメント数：<%= @book.book_comments.count %></td>
 
           <% if @book.user == current_user %>
             <td><%= link_to 'Edit', edit_book_path(@book), class: "btn btn-sm btn-success" %></td>
@@ -30,24 +30,13 @@
         </tr>
         </table>
 
-        <table>
-        <tr>
-          <% @book.book_comments.each do |book_comment| %>
-            <td><%= image_tag book_comment.user.get_profile_image, size:"100x100" %><br>
-                <%= link_to book_comment.user.name, book_comment.user %>
-            </td>
-            <td><%= book_comment.comment %></td>
-
-            <% if book_comment.user == current_user %>
-              <td><%= link_to 'Destroy', book_book_comment_path(book_comment.book, book_comment), method: :delete, class: "btn btn-sm btn-danger destroy_book_#{@book.id}" %></td>
-            <% end %>
-            </tr>
-          <% end %>
+      <table class="comment_area">
+            <%= render 'book_comments/comment_index', book: @book %>
+          </div>
       </table>
-      <%= form_with model: [@book, @book_comment] do |f| %>
-        <%= f.text_area :comment, class: "form-control", rows: '5', placeholder: "コメント欄" %>
-        <%= f.submit "送信" %>
-      <% end %>
+      <div class="new_comment">
+        <%= render 'book_comments/comment_form', book: @book, book_comment: @book_comment %>
+      </div>
     </div>
   </div>
 </div>
